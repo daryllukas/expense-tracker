@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
@@ -26,6 +26,10 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp() {
   const classes = useStyles();
 
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
@@ -38,6 +42,8 @@ export default function SignUp() {
               <TextField
                 autoComplete="name"
                 name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 variant="outlined"
                 required
                 fullWidth
@@ -54,6 +60,8 @@ export default function SignUp() {
                 id="email"
                 label="Email Address"
                 name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 autoComplete="email"
               />
             </Grid>
@@ -63,6 +71,8 @@ export default function SignUp() {
                 required
                 fullWidth
                 name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 label="Password"
                 type="password"
                 id="password"
