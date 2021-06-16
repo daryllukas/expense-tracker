@@ -3,10 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import Appwrite, {AppwriteContext} from './components/Appwrite';
 
 ReactDOM.render(
   <React.StrictMode>
+    <AppwriteContext.Provider value={new Appwrite()}>
     <App />
+    </AppwriteContext.Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
