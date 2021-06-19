@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { AppwriteContext } from "../../components/Appwrite";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -34,6 +35,21 @@ export default function SignIn() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const appwrite = useContext(AppwriteContext);
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if ( email === '' || password === '') {
+      alert('All fields are required');
+      return;
+    }
+
+    appwrite.doLogin(email, password).then((result) => {
+      console.log('Success', result);
+    }).catch((error) => {
+      console.log('Error', error);
+    });
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -41,7 +57,7 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={onSubmit}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -61,14 +77,12 @@ export default function SignIn() {
             required
             fullWidth
             name="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             label="Password"
             type="password"
             id="password"
             autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
           />
           <Button
             type="submit"
