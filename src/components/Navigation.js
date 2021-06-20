@@ -10,6 +10,7 @@ import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 import AuthUserContext from '../context/Session';
+import { AppwriteContext } from '../components/Appwrite';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,6 +25,16 @@ export default function Navigation() {
   const classes = useStyles();
   const history = useHistory();
   const authUser = useContext(AuthUserContext);
+  const appwrite = useContext(AppwriteContext);
+
+  const handleLogout = () => {
+    appwrite
+      .doLogout()
+      .then((res) => {
+        history.push(ROUTES.LANDING);
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div className={classes.root}>
@@ -44,7 +55,9 @@ export default function Navigation() {
               <Button color="inherit" onClick={() => history.push(ROUTES.HOME)}>
                 Home
               </Button>
-              <Button color="inherit">Sign Out</Button>
+              <Button color="inherit" onClick={handleLogout}>
+                Sign Out
+              </Button>
             </>
           ) : (
             <>
