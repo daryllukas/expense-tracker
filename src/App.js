@@ -6,6 +6,7 @@ import SignUp from './pages/Auth/SignUp';
 import SignIn from './pages/Auth/SignIn';
 import Home from './pages/Home';
 import { Container } from '@material-ui/core';
+import { withAuthentication } from './components/Session';
 
 function App() {
   return (
@@ -24,4 +25,4 @@ function App() {
   );
 }
 
-export default App;
+export default withAuthentication(App);
