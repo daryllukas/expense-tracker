@@ -1,13 +1,15 @@
 import {
   AppBar,
+  Box,
   Button,
   makeStyles,
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
+import AuthUserContext from '../context/Session';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,23 +23,45 @@ const useStyles = makeStyles((theme) => ({
 export default function Navigation() {
   const classes = useStyles();
   const history = useHistory();
+  const authUser = useContext(AuthUserContext);
 
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h5" className={classes.title}>
             Expense Tracker
           </Typography>
-          <Button color="inherit" onClick={() => history.push(ROUTES.HOME)}>
-            Home
-          </Button>
-          <Button color="inherit" onClick={() => history.push(ROUTES.SIGN_UP)}>
-            Sign Up
-          </Button>
-          <Button color="inherit" onClick={() => history.push(ROUTES.SIGN_IN)}>
-            Sign In
-          </Button>
+          {authUser !== null ? (
+            <>
+              {authUser.name && (
+                <Box mr={3}>
+                  <Typography variant="h6" color="inherit">
+                    Hello, {authUser.name}
+                  </Typography>
+                </Box>
+              )}
+              <Button color="inherit" onClick={() => history.push(ROUTES.HOME)}>
+                Home
+              </Button>
+              <Button color="inherit">Sign Out</Button>
+            </>
+          ) : (
+            <>
+              <Button
+                color="inherit"
+                onClick={() => history.push(ROUTES.SIGN_UP)}
+              >
+                Sign Up
+              </Button>
+              <Button
+                color="inherit"
+                onClick={() => history.push(ROUTES.SIGN_IN)}
+              >
+                Sign In
+              </Button>
+            </>
+          )}
         </Toolbar>
       </AppBar>
     </div>
