@@ -25,6 +25,10 @@ class AppwriteService {
   doLogout = () => {
       return this.account.deleteSession('current');
   }
+
+  doGetCurrentUser = () => {
+    return this.account.get();
+  }
 }
 
 export default AppwriteService;
