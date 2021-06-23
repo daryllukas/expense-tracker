@@ -12,7 +12,7 @@ import * as ROUTES from '../constants/routes';
 import AuthUserContext from '../context/Session';
 import { AppwriteContext } from '../components/Appwrite';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
   },
@@ -21,16 +21,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Navigation() {
+function Navigation() {
   const classes = useStyles();
   const history = useHistory();
-  const authUser = useContext(AuthUserContext);
+  const {authUser, getCurrentUser} = useContext(AuthUserContext);
   const appwrite = useContext(AppwriteContext);
 
   const handleLogout = () => {
     appwrite
       .doLogout()
-      .then((res) => {
+      .then(() => {
+        getCurrentUser();
         history.push(ROUTES.LANDING);
       })
       .catch((err) => console.log(err));
@@ -43,7 +44,7 @@ export default function Navigation() {
           <Typography variant="h5" className={classes.title}>
             Expense Tracker
           </Typography>
-          {authUser !== null ? (
+          {authUser ? (
             <>
               {authUser.name && (
                 <Box mr={3}>
@@ -80,3 +81,5 @@ export default function Navigation() {
     </div>
   );
 }
+
+export default Navigation;

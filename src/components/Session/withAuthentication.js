@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import AuthUserContext from '../../context/Session';
 import { AppwriteContext } from '../../components/Appwrite';
 
@@ -7,19 +7,23 @@ const withAuthentication = (Component) =>
     const [authUser, setAuthUser] = useState(null);
     const appwrite = useContext(AppwriteContext);
 
-    useEffect(() => {
+    const getCurrentUser = useCallback(() => {
       appwrite
         .doGetCurrentUser()
         .then((user) => {
           setAuthUser(user);
         })
-        .catch((err) => {
+        .catch(() => {
           setAuthUser(null);
         });
-    }, [appwrite]);
+    }, [appwrite])
+
+    useEffect(() => {
+      getCurrentUser();
+    }, [getCurrentUser]);
 
     return (
-      <AuthUserContext.Provider value={authUser}>
+      <AuthUserContext.Provider value={{ authUser, getCurrentUser }}>
         <Component {...props} />
       </AuthUserContext.Provider>
     );
