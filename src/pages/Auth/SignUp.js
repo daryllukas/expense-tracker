@@ -6,7 +6,9 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { AppwriteContext } from "../../components/Appwrite";
+import { AppwriteContext } from '../../components/Appwrite';
+import * as ROUTES from '../../constants/routes';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -32,6 +34,8 @@ export default function SignUp() {
   const [password, setPassword] = useState('');
   const appwrite = useContext(AppwriteContext);
 
+  const history = useHistory();
+
   const onSubmit = (e) => {
     e.preventDefault();
     if (name === '' || email === '' || password === '') {
@@ -39,12 +43,15 @@ export default function SignUp() {
       return;
     }
 
-    appwrite.doCreateAccount(email, password, name).then((result) => {
-      console.log('Success', result);
-    }).catch((error) => {
-      console.log('Error', error);
-    });
-  }
+    appwrite
+      .doCreateAccount(email, password, name)
+      .then(() => {
+        history.replace(ROUTES.SIGN_IN);
+      })
+      .catch((error) => {
+        console.log('Error', error);
+      });
+  };
 
   return (
     <Container component="main" maxWidth="xs">
