@@ -7,6 +7,7 @@ import SignIn from './pages/Auth/SignIn';
 import Home from './pages/Home';
 import { Container } from '@material-ui/core';
 import { withAuthentication } from './components/Session';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
           <Route exact path={ROUTES.LANDING} component={Landing} />
           <Route exact path={ROUTES.SIGN_UP} component={SignUp} />
           <Route exact path={ROUTES.SIGN_IN} component={SignIn} />
-          <Route exact path={ROUTES.HOME} component={Home} />
+          <PrivateRoute exact path={ROUTES.HOME} component={Home} />
         </Container>
       </div>
     </Router>
